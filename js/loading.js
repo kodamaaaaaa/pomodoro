@@ -23,6 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
       loader.style.opacity = "0";
       loader.style.transition = "0.8s";
 
+      setTimeout(() => {
+        window.location.href = "main.html";
       }, 800);
     }
   }, 60);

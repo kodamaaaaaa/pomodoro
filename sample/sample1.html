@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Penguin Loading</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, #8edee8 0%, #bdf3ff 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loading-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    /* キラキラ */
+    .sparkle {
+      position: absolute;
+      color: #ffffff;
+      font-size: 20px;
+      animation: sparkle 2s ease-in-out infinite;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .s1 {
+      top: 10px;
+      left: 40px;
+    }
+
+    .s2 {
+      top: 35px;
+      right: 35px;
+      animation-delay: 1s;
+    }
+
+    /* ペンギン */
+    .character {
+      width: 180px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .character img {
+      width: 100%;
+      height: auto;
+      display: block;
+      animation: floatPenguin 2s ease-in-out infinite;
+    }
+
+    /* 雲 */
+    .cloud {
+      width: 220px;
+      height: 70px;
+      background: #eaf6f8;
+      border-radius: 50px;
+      position: relative;
+      margin-top: -42px;
+      margin-bottom: 8px;
+      animation: floatCloud 4s ease-in-out infinite;
+      z-index: 1;
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.18);
+    }
+
+    .cloud::before,
+    .cloud::after {
+      content: "";
+      position: absolute;
+      background: #eaf6f8;
+      border-radius: 50%;
+    }
+
+    .cloud::before {
+      width: 80px;
+      height: 80px;
+      left: 28px;
+      top: -28px;
+    }
+
+    .cloud::after {
+      width: 100px;
+      height: 100px;
+      right: 18px;
+      top: -38px;
+    }
+
+    /* プログレスバー */
+    .progress-shell {
+      position: relative;
+      width: 320px;
+      height: 36px;
+      background: #31bfd6;
+      border-radius: 999px;
+      border: 5px solid #4bd6ea;
+      overflow: hidden;
+      box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(180deg, #dff8ff 0%, #b4eef8 100%);
+      border-radius: 999px;
+    }
+
+    .loading-text {
+      font-size: 32px;
+      font-weight: bold;
+      color: #1eaac4;
+      letter-spacing: 0.02em;
+    }
+
+    @keyframes floatPenguin {
+      0%, 100% {
+        transform: translateY(8px);
+      }
+      50% {
+        transform: translateY(-4px);
+      }
+    }
+
+    @keyframes floatCloud {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes sparkle {
+      0%, 100% {
+        opacity: 0.35;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.5);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loader" class="loader">
+    <div class="loading-wrap">
+
+      <div class="sparkle s1">✦</div>
+      <div class="sparkle s2">✦</div>
+
+      <div class="character">
+        <img src="images/88dd464e-a903-467c-a5c9-a0e8b44c21a0.png" alt="penguin">
+      </div>
+
+      <div class="cloud"></div>
+
+      <div class="progress-shell">
+        <div class="progress-bar" id="bar"></div>
+      </div>
+
+      <div class="loading-text" id="text">Loading.</div>
+
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const bar = document.getElementById("bar");
+      const text = document.getElementById("text");
+      const loader = document.getElementById("loader");
+
+      let progress = 0;
+      let t = 0;
+      const arr = ["Loading.", "Loading..", "Loading..."];
+
+      const txtTimer = setInterval(() => {
+        text.textContent = arr[t % 3];
+        t++;
+      }, 400);
+
+      const timer = setInterval(() => {
+        progress += 2;
+        bar.style.width = progress + "%";
+
+        if (progress >= 100) {
+          clearInterval(timer);
+          clearInterval(txtTimer);
+
+          loader.style.opacity = "0";
+          loader.style.transition = "0.8s";
+
+          setTimeout(() => {
+            window.location.href = "main.html";
+          }, 800);
+        }
+      }, 60);
+    });
+  </script>
+
+</body>
+</html>
